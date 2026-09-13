@@ -147,7 +147,7 @@ async function seed(): Promise<void> {
                 image_url: uploadedImage,
                 price: item.price,
                 rating: item.rating,
-                calories: item.calories,
+                calorie: item.calories,
                 protein: item.protein,
                 categories: categoryMap[item.category_name],
             }

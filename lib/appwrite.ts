@@ -26,6 +26,14 @@ export const databases = new Databases(client);
 export const storage = new Storage(client);
 const avatars = new Avatars(client);
 
+const getErrorMessage = (error: unknown): string => {
+    if (error instanceof Error) return error.message;
+    if (typeof error === "object" && error !== null && "message" in error) {
+        return String(error.message);
+    }
+    return String(error);
+};
+
 export const createUser = async ({ email, password, name }: CreateUserParams) => {
     try {
         const newAccount = await account.create(ID.unique(), email, password, name)
@@ -33,7 +41,7 @@ export const createUser = async ({ email, password, name }: CreateUserParams) =>
 
         await signIn({ email, password });
 
-        const avatarUrl = avatars.getInitialsURL(name);
+        const avatarUrl = avatars.getInitialsURL(name).toString();
 
         return await databases.createDocument(
             appwriteConfig.databaseId,
@@ -42,7 +50,7 @@ export const createUser = async ({ email, password, name }: CreateUserParams) =>
             { email, name, accountId: newAccount.$id, avatar: avatarUrl }
         );
     } catch (e) {
-        throw new Error(e as string);
+        throw new Error(getErrorMessage(e));
     }
 }
 
@@ -59,7 +67,7 @@ export const signIn = async ({ email, password }: SignInParams) => {
         const session = await account.createEmailPasswordSession(email, password);
         return session;
     } catch (e: any) {
-        throw new Error(e?.message || e);
+        throw new Error(getErrorMessage(e));
     }
 }
 
@@ -67,7 +75,7 @@ export const signOut = async () => {
     try {
         await account.deleteSession("current");
     } catch (e: any) {
-        throw new Error(e?.message || e);
+        throw new Error(getErrorMessage(e));
     }
 }
 
@@ -144,7 +152,7 @@ export const getMenu = async ({ category, query }: GetMenuParams) => {
 
         return menus.documents;
     } catch (e) {
-        throw new Error(e as string);
+        throw new Error(getErrorMessage(e));
     }
 }
 
@@ -157,6 +165,6 @@ export const getCategories = async () => {
 
         return categories.documents;
     } catch (e) {
-        throw new Error(e as string);
+        throw new Error(getErrorMessage(e));
     }
 }

@@ -2,12 +2,11 @@ import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from 'expo-font';
 import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
-
-export { ErrorBoundary } from 'expo-router';
-
 import './globals.css';
 import * as Sentry from '@sentry/react-native';
 import useAuthStore from "@/store/auth.store";
+
+export { ErrorBoundary } from 'expo-router';
 
 // Prevent the splash screen from auto-hiding before asset loading completes
 SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -48,7 +47,7 @@ export default Sentry.wrap(function RootLayout() {
 
   useEffect(() => {
     fetchAuthenticatedUser();
-  }, []);
+  }, [fetchAuthenticatedUser]);
 
   if (!fontsLoaded) {
     return null;

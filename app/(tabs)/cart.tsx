@@ -29,7 +29,7 @@ const Cart = () => {
             <FlatList
                 data={items}
                 renderItem={({ item }) => <CartItem item={item} />}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => `${item.id}-${(item.customizations ?? []).map(({ id }) => id).sort().join('-')}`}
                 contentContainerClassName="pb-28 px-5 pt-5"
                 ListHeaderComponent={() => <CustomHeader title="Your Cart" />}
                 ListEmptyComponent={() => <Text>Cart Empty</Text>}
@@ -41,7 +41,7 @@ const Cart = () => {
                             </Text>
 
                             <PaymentInfoStripe
-                                label={`Total Items (${totalItems})`}
+                                label="Subtotal"
                                 value={`$${totalPrice.toFixed(2)}`}
                             />
                             <PaymentInfoStripe

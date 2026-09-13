@@ -1,4 +1,4 @@
-import {View, Text, FlatList} from 'react-native'
+import { Alert, View, Text, FlatList } from 'react-native'
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useCartStore} from "@/store/cart.store";
 import CustomHeader from "@/components/CustomHeader";
@@ -19,10 +19,33 @@ const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: Payment
 );
 
 const Cart = () => {
-    const { items, getTotalItems, getTotalPrice } = useCartStore();
+    const { items, getTotalItems, getTotalPrice, clearCart } = useCartStore();
 
     const totalItems = getTotalItems();
     const totalPrice = getTotalPrice();
+    const orderTotal = totalPrice + 5 - 0.5;
+
+    const handleOrder = () => {
+        if (items.length === 0) {
+            Alert.alert("Your cart is empty", "Add an item before placing an order.");
+            return;
+        }
+
+        Alert.alert(
+            "Confirm order",
+            `Place your order for $${orderTotal.toFixed(2)}?`,
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Place order",
+                    onPress: () => {
+                        clearCart();
+                        Alert.alert("Order placed", "Your order has been placed successfully.");
+                    },
+                },
+            ]
+        );
+    };
 
     return (
         <SafeAreaView className="bg-white h-full">
@@ -56,13 +79,13 @@ const Cart = () => {
                             <View className="border-t border-gray-300 my-2" />
                             <PaymentInfoStripe
                                 label={`Total`}
-                                value={`$${(totalPrice + 5 - 0.5).toFixed(2)}`}
+                                value={`$${orderTotal.toFixed(2)}`}
                                 labelStyle="base-bold !text-dark-100"
                                 valueStyle="base-bold !text-dark-100 !text-right"
                             />
                         </View>
 
-                        <CustomButton title="Order Now" />
+                        <CustomButton title="Order Now" onPress={handleOrder} />
                     </View>
                 )}
             />

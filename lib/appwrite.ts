@@ -1,5 +1,5 @@
-import { Account, Avatars, Client, Databases, ID, Query, Storage } from "react-native-appwrite";
-import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
+import { Account, Avatars, Client, Databases, ExecutionMethod, Functions, ID, Query, Storage } from "react-native-appwrite";
+import { CartItemType, CreateUserParams, GetMenuParams, SignInParams } from "@/type";
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
@@ -11,7 +11,8 @@ export const appwriteConfig = {
     categoriesCollectionId: process.env.EXPO_PUBLIC_APPWRITE_CATEGORIES_COLLECTION_ID || '68643a390017b239fa0f',
     menuCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MENU_COLLECTION_ID || '68643ad80027ddb96920',
     customizationsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_CUSTOMIZATIONS_COLLECTION_ID || '68643c0300297e5abc95',
-    menuCustomizationsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MENU_CUSTOMIZATIONS_COLLECTION_ID || '68643cd8003580ecdd8f'
+    menuCustomizationsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MENU_CUSTOMIZATIONS_COLLECTION_ID || '68643cd8003580ecdd8f',
+    stripeFunctionId: process.env.EXPO_PUBLIC_APPWRITE_STRIPE_FUNCTION_ID!,
 }
 
 export const client = new Client();
@@ -24,6 +25,7 @@ client
 export const account = new Account(client);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
+export const functions = new Functions(client);
 const avatars = new Avatars(client);
 
 const getErrorMessage = (error: unknown): string => {
@@ -168,6 +170,46 @@ export const getCategories = async () => {
         )
 
         return categories.documents;
+    } catch (e) {
+        throw new Error(getErrorMessage(e));
+    }
+}
+
+// Asks the Stripe Appwrite Function for a Checkout page. Prices are recalculated on the server.
+export const createCheckoutSession = async (items: CartItemType[], redirectUrl: string) => {
+    if (!appwriteConfig.stripeFunctionId) {
+        throw new Error("EXPO_PUBLIC_APPWRITE_STRIPE_FUNCTION_ID is not set.");
+    }
+
+    try {
+        const execution = await functions.createExecution(
+            appwriteConfig.stripeFunctionId,
+            JSON.stringify({
+                redirectUrl,
+                items: items.map(({ id, quantity, customizations }) => ({
+                    id,
+                    quantity,
+                    customizations: (customizations ?? []).map(({ id }) => ({ id })),
+                })),
+            }),
+            false,
+            '/checkout',
+            ExecutionMethod.POST,
+            { 'content-type': 'application/json' },
+        );
+
+        let response: { ok?: boolean; url?: string; message?: string } = {};
+        try {
+            response = JSON.parse(execution.responseBody);
+        } catch {
+            // Non-JSON body (e.g. function crashed); handled below.
+        }
+
+        if (!response.ok || !response.url) {
+            throw new Error(response.message || `Checkout failed (status ${execution.responseStatusCode}).`);
+        }
+
+        return response.url;
     } catch (e) {
         throw new Error(getErrorMessage(e));
     }

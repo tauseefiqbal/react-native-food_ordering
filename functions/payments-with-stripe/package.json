@@ -1,0 +1,14 @@
+{
+  "name": "payments-with-stripe",
+  "version": "1.0.0",
+  "description": "Appwrite Function: Stripe Checkout for the food ordering app cart",
+  "main": "src/main.js",
+  "type": "module",
+  "dependencies": {
+    "node-appwrite": "^29.0.0",
+    "stripe": "^15.7.0"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}

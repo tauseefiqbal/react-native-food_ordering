@@ -6,6 +6,10 @@ import cn from "clsx";
 import CustomButton from "@/components/CustomButton";
 import CartItem from "@/components/CartItem";
 import { PaymentInfoStripeProps } from "@/type";
+import { useState } from "react";
+import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
+import { createCheckoutSession } from "@/lib/appwrite";
 
 const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: PaymentInfoStripeProps) => (
     <View className="flex-between flex-row my-1">
@@ -25,26 +29,32 @@ const Cart = () => {
     const totalPrice = getTotalPrice();
     const orderTotal = totalPrice + 5 - 0.5;
 
-    const handleOrder = () => {
+    const [isPaying, setIsPaying] = useState(false);
+
+    const handleOrder = async () => {
         if (items.length === 0) {
             Alert.alert("Your cart is empty", "Add an item before placing an order.");
             return;
         }
 
-        Alert.alert(
-            "Confirm order",
-            `Place your order for $${orderTotal.toFixed(2)}?`,
-            [
-                { text: "Cancel", style: "cancel" },
-                {
-                    text: "Place order",
-                    onPress: () => {
-                        clearCart();
-                        Alert.alert("Order placed", "Your order has been placed successfully.");
-                    },
-                },
-            ]
-        );
+        setIsPaying(true);
+        try {
+            // Stripe sends the browser back to this deep link after payment or cancel.
+            const redirectUrl = Linking.createURL("payment-result");
+            const checkoutUrl = await createCheckoutSession(items, redirectUrl);
+            const result = await WebBrowser.openAuthSessionAsync(checkoutUrl, redirectUrl);
+
+            if (result.type === "success" && Linking.parse(result.url).queryParams?.status === "success") {
+                clearCart();
+                Alert.alert("Order placed", "Payment received. Your order has been placed successfully.");
+            } else {
+                Alert.alert("Payment not completed", "Your order was not placed. You can try again.");
+            }
+        } catch (e: any) {
+            Alert.alert("Payment failed", e?.message ?? "Something went wrong. Please try again.");
+        } finally {
+            setIsPaying(false);
+        }
     };
 
     return (
@@ -85,7 +95,7 @@ const Cart = () => {
                             />
                         </View>
 
-                        <CustomButton title="Order Now" onPress={handleOrder} />
+                        <CustomButton title="Order Now" onPress={handleOrder} isLoading={isPaying} />
                     </View>
                 )}
             />

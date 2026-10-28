@@ -4,7 +4,9 @@ import {appwriteConfig} from "@/lib/appwrite";
 import {useCartStore} from "@/store/cart.store";
 
 const MenuCard = ({ item: { $id, image_url, name, price }}: { item: MenuItem}) => {
-    const imageUrl = `${image_url}?project=${appwriteConfig.projectId}`;
+    const imageUrl = image_url.includes('project=')
+        ? image_url
+        : `${image_url}${image_url.includes('?') ? '&' : '?'}project=${appwriteConfig.projectId}`;
     const { addItem } = useCartStore();
 
     return (

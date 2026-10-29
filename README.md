@@ -9,19 +9,19 @@ A full-stack cross-platform mobile food ordering application built with **React 
 - [Fast Food — Mobile Food Ordering App](#fast-food--mobile-food-ordering-app)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
-    - [Authentication & User Management](#authentication--user-management)
-    - [Home, Menu Discovery & Search](#home-menu-discovery--search)
-    - [Shopping Cart & Customizations](#shopping-cart--customizations)
-    - [Stripe Checkout & Order Processing](#stripe-checkout--order-processing)
-    - [Monitoring, UI & Cross-Platform Support](#monitoring-ui--cross-platform-support)
+    - [Authentication \& User Management](#authentication--user-management)
+    - [Home, Menu Discovery \& Search](#home-menu-discovery--search)
+    - [Shopping Cart \& Customizations](#shopping-cart--customizations)
+    - [Stripe Checkout \& Order Processing](#stripe-checkout--order-processing)
+    - [Monitoring, UI \& Cross-Platform Support](#monitoring-ui--cross-platform-support)
   - [Tech Stack](#tech-stack)
-    - [Frontend & Mobile Framework](#frontend--mobile-framework)
-    - [State Management & Styling](#state-management--styling)
-    - [Backend & Cloud Services (Appwrite)](#backend--cloud-services-appwrite)
-    - [Payments & Observability](#payments--observability)
+    - [Frontend \& Mobile Framework](#frontend--mobile-framework)
+    - [State Management \& Styling](#state-management--styling)
+    - [Backend \& Cloud Services (Appwrite)](#backend--cloud-services-appwrite)
+    - [Payments \& Observability](#payments--observability)
   - [Deployment](#deployment)
     - [Live Application URL](#live-application-url)
-    - [Backend & Serverless Endpoints](#backend--serverless-endpoints)
+    - [Backend \& Serverless Endpoints](#backend--serverless-endpoints)
   - [Test and Admin Users Credentials](#test-and-admin-users-credentials)
     - [Regular Test User Credentials](#regular-test-user-credentials)
     - [Admin User Credentials](#admin-user-credentials)
@@ -31,13 +31,13 @@ A full-stack cross-platform mobile food ordering application built with **React 
     - [3. Search and Filter Menu Items](#3-search-and-filter-menu-items)
     - [4. Manage Your Cart](#4-manage-your-cart)
     - [5. Complete Checkout with Stripe](#5-complete-checkout-with-stripe)
-    - [6. View Profile & Sign Out](#6-view-profile--sign-out)
+    - [6. View Profile \& Sign Out](#6-view-profile--sign-out)
   - [How to Use App for Admin User](#how-to-use-app-for-admin-user)
     - [1. Access the Appwrite Console](#1-access-the-appwrite-console)
-    - [2. Seed or Reset Menu & Category Data](#2-seed-or-reset-menu--category-data)
-    - [3. Manage Menu Items, Categories & Customizations](#3-manage-menu-items-categories--customizations)
+    - [2. Seed or Reset Menu \& Category Data](#2-seed-or-reset-menu--category-data)
+    - [3. Manage Menu Items, Categories \& Customizations](#3-manage-menu-items-categories--customizations)
     - [4. Manage Storage Assets](#4-manage-storage-assets)
-    - [5. Monitor Orders & Stripe Webhook Executions](#5-monitor-orders--stripe-webhook-executions)
+    - [5. Monitor Orders \& Stripe Webhook Executions](#5-monitor-orders--stripe-webhook-executions)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
@@ -120,7 +120,7 @@ A full-stack cross-platform mobile food ordering application built with **React 
 ## Deployment
 
 ### Live Application URL
-- **App Live URL**: (APP URL)
+- **App Live URL**: (https://expo.dev/accounts/tauseefiqbal/projects/fast_food/builds/0cff3e7d-2a13-4e1b-b530-a21acdd826c3)
 
 ### Backend & Serverless Endpoints
 - **Appwrite Cloud Endpoint**: `https://fra.cloud.appwrite.io/v1`
@@ -137,9 +137,9 @@ Use the following test account to sign in to the mobile app, or register a new a
 
 | Field | Value |
 | :--- | :--- |
-| **Email** | `testuser@example.com` |
-| **Password** | `Test@123456` |
-| **Role** | Regular Customer (`any` / authenticated Appwrite session) |
+| **Email** | `bob@food-ordering.com` |
+| **Password** | `tesT1233$$` |
+| **Role** | Regular Customer |
 
 ### Admin User Credentials
 Admin operations (managing collections, storage buckets, functions, and orders) are performed via the **Appwrite Console** or **Appwrite CLI**:
@@ -233,7 +233,7 @@ Admin operations (managing collections, storage buckets, functions, and orders) 
 ### Installation
 1. Clone the repository and navigate to the project directory:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/tauseefiqbal/react-native-food_ordering.git
    cd react-native-food_ordering
    ```
 2. Install project dependencies:

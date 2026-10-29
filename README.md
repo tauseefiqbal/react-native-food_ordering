@@ -24,7 +24,6 @@ A full-stack cross-platform mobile food ordering application built with **React 
     - [Backend \& Serverless Endpoints](#backend--serverless-endpoints)
   - [Test and Admin Users Credentials](#test-and-admin-users-credentials)
     - [Regular Test User Credentials](#regular-test-user-credentials)
-    - [Admin User Credentials](#admin-user-credentials)
   - [How to Use App for Regular User](#how-to-use-app-for-regular-user)
     - [1. Sign Up or Sign In](#1-sign-up-or-sign-in)
     - [2. Browse Offers on the Home Tab](#2-browse-offers-on-the-home-tab)
@@ -140,16 +139,6 @@ Use the following test account to sign in to the mobile app, or register a new a
 | **Email** | `bob@food-ordering.com` |
 | **Password** | `tesT1233$$` |
 | **Role** | Regular Customer |
-
-### Admin User Credentials
-Admin operations (managing collections, storage buckets, functions, and orders) are performed via the **Appwrite Console** or **Appwrite CLI**:
-
-| Field | Value |
-| :--- | :--- |
-| **Console URL** | `https://cloud.appwrite.io/console/project-6a9ed480003c0d80abd9` |
-| **Admin Email** | `<YOUR_APPWRITE_ADMIN_EMAIL>` |
-| **Admin Password** | `<YOUR_APPWRITE_ADMIN_PASSWORD>` |
-| **Project ID** | `6a9ed480003c0d80abd9` |
 
 ---
 
